@@ -28,7 +28,7 @@ static inline void print_highlights(const char *path, PopplerPage *page, GList *
 	}
 }
 
-void hl_print(const char *file){
+static void hl_print(const char *file){
 	GError *error = NULL;
 	PopplerDocument *document = poppler_document_new_from_file(file, NULL, &error);
 	int num_pages;

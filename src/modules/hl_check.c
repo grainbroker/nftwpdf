@@ -30,14 +30,14 @@ static inline int has_highlights(GList *annotations) {
     return 0;
 }
 
-int hl_check(const char *file){
+static void hl_check(const char *file){
 	GError *error = NULL;
 	PopplerDocument *document = poppler_document_new_from_file(file, NULL, &error);
 	int num_pages;
 
 	if (!document) {
 		g_error_free(error);
-		return 0;
+		return;
 	}
 
 	num_pages = poppler_document_get_n_pages(document);
@@ -53,7 +53,7 @@ int hl_check(const char *file){
 			if (has_highlights(annotations)) {
 				fprintf(stdout, "%s\n", file);
 				hl_count++;
-				return 1;
+				return;
 			}
 
 			g_list_free_full(annotations, (GDestroyNotify)poppler_annot_mapping_free);
@@ -63,7 +63,6 @@ int hl_check(const char *file){
 	}
 
 	g_object_unref(document);
-	return 0;
 }
 
 

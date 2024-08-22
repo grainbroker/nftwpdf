@@ -9,7 +9,6 @@
 
 unsigned long get_hl_count();
 
-int hl_check(const char *file);
 int nftw_hl_check(const char *fpath, const struct stat *sb, int typeflag,
 							struct FTW *ftwbuf);
 
