@@ -10,10 +10,11 @@
 #include <poppler/glib/poppler.h>
 #include <glib.h>
 
-static unsigned long annotations_number = 0;
+/* Annotation count */
+static unsigned long hl_count = 0;
 
-unsigned long get_annotations_number(){
-	return annotations_number;
+unsigned long get_hl_count(){
+	return hl_count;
 }
 
 
@@ -29,7 +30,7 @@ static inline int has_highlights(GList *annotations) {
     return 0;
 }
 
-int annot_check(const char *file){
+int hl_check(const char *file){
 	GError *error = NULL;
 	PopplerDocument *document = poppler_document_new_from_file(file, NULL, &error);
 	int num_pages;
@@ -51,7 +52,7 @@ int annot_check(const char *file){
 		if(annotations) {
 			if (has_highlights(annotations)) {
 				fprintf(stdout, "%s\n", file);
-				annotations_number++;
+				hl_count++;
 				return 1;
 			}
 
@@ -67,30 +68,14 @@ int annot_check(const char *file){
 
 
 /* wrapper for ntfw syscall */
-int nftw_annot_check(const char *fpath, const struct stat *sb, int typeflag,
+int nftw_hl_check(const char *fpath, const struct stat *sb, int typeflag,
 							struct FTW *ftwbuf){
 	char uri[PATH_MAX + 7];
 	snprintf(uri, sizeof(uri), "file://%s", fpath);
 
 	if ((typeflag == FTW_F && strstr(fpath, ".pdf") != NULL))
-	annot_check(uri);
+	hl_check(uri);
 
 
 	return 0;
-}
-
-void print_first_annotation(GList *annotations) {
-    if (annotations) {
-        PopplerAnnotMapping *first_annot = (PopplerAnnotMapping *)annotations->data;
-        PopplerAnnot *annot = first_annot->annot;
-        gchar *annot_text = poppler_annot_get_contents(annot);
-
-        if (annot_text && *annot_text) {
-            fprintf(stdout, "First annotation text: %s\n", annot_text);
-        } else {
-            fprintf(stdout, "First annotation has no text content.\n");
-        }
-
-        g_free(annot_text);
-    }
 }
