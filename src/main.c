@@ -12,7 +12,9 @@
 
 #include "error.h"
 #include "suppress.h"
-#include "annot_check.h"
+#include "modules/hl_check.h"
+
+#define NFTW_FD_DEFAULT 32
 
 int main(int argc, char **argv){
 
@@ -23,7 +25,7 @@ int main(int argc, char **argv){
 
 	if (argc < 2) {
 		if (getcwd(cwd, sizeof(cwd)) != NULL){
-			if (nftw(cwd, nftw_annot_check, 20, 0) == -1) {
+			if (nftw(cwd, nftw_hl_check, NFTW_FD_DEFAULT, 0) == -1) {
 				fprintf(stderr, "Error resolving: %s - %s", cwd, strerror(errno));
 				return 1;
 			}
@@ -35,13 +37,13 @@ int main(int argc, char **argv){
 			fprintf(stderr, "Error resolving: %s - %s", argv[i], strerror(errno));
 			continue;
 		}
-		if (nftw(full_path, nftw_annot_check, 20, 0) == -1) {
+		if (nftw(full_path, nftw_hl_check, NFTW_FD_DEFAULT, 0) == -1) {
 			fprintf(stderr, "Error traversing: %s - %s", argv[i], strerror(errno));
 			continue;
 		}
 	}
 
-	if ( get_annotations_number() ) exit(EXIT_SUCCESS);
+	if ( get_hl_count() ) exit(EXIT_SUCCESS);
 	exit(EXIT_FAILURE);
 }
 
