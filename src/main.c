@@ -13,6 +13,7 @@
 #include "error.h"
 #include "suppress.h"
 #include "modules/hl_check.h"
+#include "modules/hl_print.h"
 
 #define NFTW_FD_DEFAULT 32
 
@@ -25,7 +26,7 @@ int main(int argc, char **argv){
 
 	if (argc < 2) {
 		if (getcwd(cwd, sizeof(cwd)) != NULL){
-			if (nftw(cwd, nftw_hl_check, NFTW_FD_DEFAULT, 0) == -1) {
+			if (nftw(cwd, nftw_hl_print, NFTW_FD_DEFAULT, 0) == -1) {
 				fprintf(stderr, "Error resolving: %s - %s", cwd, strerror(errno));
 				return 1;
 			}
@@ -37,7 +38,7 @@ int main(int argc, char **argv){
 			fprintf(stderr, "Error resolving: %s - %s", argv[i], strerror(errno));
 			continue;
 		}
-		if (nftw(full_path, nftw_hl_check, NFTW_FD_DEFAULT, 0) == -1) {
+		if (nftw(full_path, nftw_hl_print, NFTW_FD_DEFAULT, 0) == -1) {
 			fprintf(stderr, "Error traversing: %s - %s", argv[i], strerror(errno));
 			continue;
 		}

@@ -7,7 +7,7 @@ TARGET = nftwpdf
 
 SRC_DIR = src
 MODULES = $(SRC_DIR)/modules
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/error.c $(MODULES)/hl_check.c $(SRC_DIR)/suppress.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/error.c  $(SRC_DIR)/suppress.c  $(MODULES)/hl_check.c  $(MODULES)/hl_print.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -21,4 +21,3 @@ clean:
 	rm -f $(OBJS) $(TARGET)
 
 .PHONY: clean
-
