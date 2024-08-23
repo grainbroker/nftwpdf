@@ -13,35 +13,52 @@
 #include "utils.h"
 #include "nftw_wrappers/nftw_wrappers.h"
 
-
 int main(int argc, char **argv){
 
+	int check_flag = 0;
+	int opt;
 
-	g_log_set_handler("Poppler", G_LOG_LEVEL_WARNING, suppress_poppler_warnings, NULL);
+	int (*nftw_func)(const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf);
+	nftw_func = &nftw_hl_check;
 
-	char cwd[PATH_MAX];
+	/* Default case */
 
-	if (argc < 2) {
-		if (getcwd(cwd, sizeof(cwd)) != NULL){
-			if (nftw(cwd, nftw_hl_print, NFTW_FD_DEFAULT, 0) == -1) {
-				fprintf(stderr, "Error resolving: %s - %s", cwd, strerror(errno));
-				return 1;
-			}
-		}
+	char **rargs;
+	char full_path[PATH_MAX];
 
-	} else for (int i = 0; i < argc; i++){
-		char full_path[PATH_MAX];
-		if (realpath(argv[i], full_path) == NULL) {
-			fprintf(stderr, "Error resolving: %s - %s", argv[i], strerror(errno));
-			continue;
-		}
-		if (nftw(full_path, nftw_hl_print, NFTW_FD_DEFAULT, 0) == -1) {
-			fprintf(stderr, "Error traversing: %s - %s", argv[i], strerror(errno));
-			continue;
+
+	while((opt = getopt(argc, argv, "ch")) != -1){
+		switch(opt){
+			default:
+				nftw_func = &nftw_hl_check;
+				check_flag = 1;
+				break;
+			case 'c':
+				nftw_func = &nftw_hl_check;
+				check_flag = 1;
+				break;
+			case 'h':
+				nftw_func = &nftw_hl_print;
+				break;
 		}
 	}
 
-	if ( get_hl_count() ) exit(EXIT_SUCCESS);
-	exit(EXIT_FAILURE);
-}
+	for (int i = optind; i < argc; i++){
+		if(realpath(argv[i], full_path) == NULL ){
+			fprintf(stderr, "Error resolving: %s -- %s", argv[i], strerror(errno));
+			continue;
+		}
 
+		if (nftw(full_path, nftw_func, NFTW_FD_DEFAULT, 0) == -1){
+			fprintf(stderr, "Error traversing: %s -- %s", argv[i], strerror(errno));
+			continue;
+		}
+
+	}
+
+	if ( check_flag )
+		if ( get_hl_count() ) exit(EXIT_SUCCESS);
+		else exit(EXIT_FAILURE);
+
+	exit(EXIT_SUCCESS);
+}
