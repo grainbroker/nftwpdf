@@ -10,6 +10,8 @@
 #include <poppler/glib/poppler.h>
 #include <glib.h>
 
+#include <../utils.h>
+
 /* Annotation count */
 static unsigned long hl_count = 0;
 
@@ -51,7 +53,7 @@ static void hl_check(const char *file){
 
 		if(annotations) {
 			if (has_highlights(annotations)) {
-				fprintf(stdout, "%s\n", file);
+				fprintf(stdout, "%s\n", strip_uri(file));
 				hl_count++;
 				return;
 			}

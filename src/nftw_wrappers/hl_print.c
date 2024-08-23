@@ -10,6 +10,9 @@
 #include <poppler/glib/poppler.h>
 #include <glib.h>
 
+#include <../utils.h>
+
+
 static inline void print_highlights(const char *path, PopplerPage *page, GList *annotations) {
 	for (GList *l = annotations; l != NULL; l = l->next) {
 		PopplerAnnotMapping *annot_mapping = (PopplerAnnotMapping *)l->data;
@@ -21,7 +24,7 @@ static inline void print_highlights(const char *path, PopplerPage *page, GList *
 
 			char *highlight_text = poppler_page_get_text_for_area(page, &area);
 			if (highlight_text && highlight_text[0] != '\0') {
-				printf("%s: %s\n", path, highlight_text);
+				printf("%s: %s\n", strip_uri(path), highlight_text);
 			}
 			g_free(highlight_text);
 		}
