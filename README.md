@@ -11,12 +11,4 @@
 # TODO
 - error func should use stdarg and pass args to fprintf [ ]
 - getopt [ ]
-- add annotations / hl [ ]
-- is dir or file? [ ]
-- rename annot to hl [ ]
-- success global variable [ ]
 - operations on pdf [ ]
-
-
-- print annotations / hl [X]
-- default fd used by nftw [X]
