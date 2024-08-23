@@ -6,8 +6,9 @@ LDFLAGS = `pkg-config --libs poppler-glib`
 TARGET = nftwpdf
 
 SRC_DIR = src
-MODULES = $(SRC_DIR)/modules
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/error.c  $(SRC_DIR)/suppress.c  $(MODULES)/hl_check.c  $(MODULES)/hl_print.c
+NFTW_WRAPPERS_DIR = $(SRC_DIR)/nftw_wrappers
+NFTW_WRAPPERS = $(NFTW_WRAPPERS_DIR)/hl_check.c $(NFTW_WRAPPERS_DIR)/hl_print.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/error.c  $(SRC_DIR)/suppress.c  $(NFTW_WRAPPERS)
 
 OBJS = $(SRCS:.c=.o)
 
