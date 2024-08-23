@@ -30,9 +30,7 @@ int main(int argc, char **argv){
 	while((opt = getopt(argc, argv, "ch")) != -1){
 		switch(opt){
 			default:
-				nftw_func = &nftw_hl_check;
-				check_flag = 1;
-				break;
+				/* fall through */
 			case 'c':
 				nftw_func = &nftw_hl_check;
 				check_flag = 1;
