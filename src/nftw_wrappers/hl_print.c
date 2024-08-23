@@ -10,7 +10,7 @@
 #include <poppler/glib/poppler.h>
 #include <glib.h>
 
-#include <../utils.h>
+#include "../utils.h"
 
 
 static inline void print_highlights(const char *path, PopplerPage *page, GList *annotations) {
@@ -66,9 +66,7 @@ int nftw_hl_print(const char *fpath, const struct stat *sb, int typeflag,
 	char uri[PATH_MAX + 7];
 	snprintf(uri, sizeof(uri), "file://%s", fpath);
 
-	if ((typeflag == FTW_F && strstr(fpath, ".pdf") != NULL))
-	hl_print(uri);
-
+	if ((typeflag == FTW_F) && (is_pdf(uri))) hl_print(uri);
 
 	return 0;
 }

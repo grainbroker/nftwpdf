@@ -10,7 +10,7 @@
 #include <poppler/glib/poppler.h>
 #include <glib.h>
 
-#include <../utils.h>
+#include "../utils.h"
 
 /* Annotation count */
 static unsigned long hl_count = 0;
@@ -74,9 +74,7 @@ int nftw_hl_check(const char *fpath, const struct stat *sb, int typeflag,
 	char uri[PATH_MAX + 7];
 	snprintf(uri, sizeof(uri), "file://%s", fpath);
 
-	if ((typeflag == FTW_F && strstr(fpath, ".pdf") != NULL))
-	hl_check(uri);
-
+	if ((typeflag == FTW_F) || (is_pdf(uri))) hl_check(uri);
 
 	return 0;
 }
