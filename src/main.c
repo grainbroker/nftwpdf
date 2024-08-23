@@ -10,12 +10,9 @@
 #include <glib.h>
 #include <poppler/glib/poppler.h>
 
-#include "error.h"
-#include "suppress.h"
-#include "modules/hl_check.h"
-#include "modules/hl_print.h"
+#include "utils.h"
+#include "nftw_wrappers/nftw_wrappers.h"
 
-#define NFTW_FD_DEFAULT 32
 
 int main(int argc, char **argv){
 
